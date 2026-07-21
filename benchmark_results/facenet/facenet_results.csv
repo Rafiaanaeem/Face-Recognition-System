@@ -1,0 +1,2 @@
+Model,Selected_L2_Distance_Threshold,Accuracy_Percent,Precision_Percent,Recall_Percent,F1_Score_Percent,Average_Feature_Extraction_Time_sec,Average_Search_Time_sec,Average_Inference_Time_sec,Model_Loading_Time_sec,Embedding_Dimension,Model_Size_MB,CPU_Usage_Percent,RAM_Usage_Percent,GPU_VRAM_Usage
+FaceNet,1.025,78.57,76.19,78.57,74.52,0.148365,0.004139,0.15412,5.198615,512,106.58,25.03,17.69,"Util: 8.1%, Peak VRAM: 415 MB"

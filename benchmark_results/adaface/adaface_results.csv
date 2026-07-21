@@ -1,0 +1,2 @@
+Model,Selected_Cosine_Distance_Threshold,Accuracy_Percent,Precision_Percent,Recall_Percent,F1_Score_Percent,Average_Feature_Extraction_Time_sec,Average_Search_Time_sec,Average_Inference_Time_sec,Model_Loading_Time_sec,Embedding_Dimension,Model_Size_MB,CPU_Usage_Percent,RAM_Usage_Percent,GPU_VRAM_Usage
+AdaFace,0.625,100.0,100.0,100.0,100.0,1.836977,0.006677,1.845734,27.495454,512,248.8,45.91,25.05,"Util: 65.7%, Peak VRAM: 13949 MB"

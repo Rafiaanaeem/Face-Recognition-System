@@ -1,0 +1,9 @@
+,Unknown,dr_strange,loki,natasha,steve_roger,thor,tony,wanda_maximoff
+Unknown,1,0,0,0,0,0,0,0
+dr_strange,0,2,0,0,0,0,0,0
+loki,0,0,2,0,0,0,0,0
+natasha,0,0,0,2,0,0,0,0
+steve_roger,0,0,0,0,2,0,0,0
+thor,0,0,0,0,0,1,0,0
+tony,0,0,0,0,0,0,3,0
+wanda_maximoff,0,0,0,0,0,0,0,1

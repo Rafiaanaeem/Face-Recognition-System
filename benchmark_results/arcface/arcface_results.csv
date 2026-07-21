@@ -1,0 +1,2 @@
+Model,Selected_Cosine_Distance_Threshold,Accuracy_Percent,Precision_Percent,Recall_Percent,F1_Score_Percent,Average_Feature_Extraction_Time_sec,Average_Search_Time_sec,Average_Inference_Time_sec,Model_Loading_Time_sec,Embedding_Dimension,Model_Size_MB,CPU_Usage_Percent,RAM_Usage_Percent,GPU_VRAM_Usage
+ArcFace,0.6,100.0,100.0,100.0,100.0,1.13854,0.004382,1.144502,12.290789,512,325.46,41.68,18.49,"Util: 0.0%, Peak VRAM: 105 MB"
