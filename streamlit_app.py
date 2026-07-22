@@ -5,19 +5,16 @@ import numpy as np
 from PIL import Image
 import io
 
-# Page Configuration
 st.set_page_config(
     page_title="ArcFace AI Vision Dashboard",
     layout="wide"
 )
 
 # Backend API Configuration
-API_BASE_URL = "http://127.0.0.1:8000"  # Aapka FastAPI server URL
+API_BASE_URL = "http://127.0.0.1:8000"  
 
 
-# Helper Function: Draw Bounding Boxes and Similarity Percentage on Image
 def draw_results_on_image(image_bytes, matches):
-    # Raw bytes ko OpenCV BGR Image matrix mein convert karna
     nparr = np.frombuffer(image_bytes, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
@@ -27,44 +24,35 @@ def draw_results_on_image(image_bytes, matches):
         name = match["person_name"]
         is_known = match["is_known"]
 
-        # 🟢 Extract or Calculate Similarity Percentage
         if "similarity_percent" in match:
             sim_pct = match["similarity_percent"]
         else:
             dist = match.get("cosine_distance", 1.0)
             sim_pct = round(max(0.0, 1.0 - dist) * 100, 1)
 
-        # Color: Known ke liye Green (0, 255, 0), Unknown ke liye Red (0, 0, 255)
         color = (0, 255, 0) if is_known else (0, 0, 255)
 
-        # 🟢 Label Text Format: "Ali Khan (85.2%)" ya "Unknown (42.1%)"
         label = f"{name} ({sim_pct}%)" if is_known else f"Unknown ({sim_pct}%)"
 
-        # Bounding box draw karna
         cv2.rectangle(img, (x1, y1), (x2, y2), color, 3)
 
-        # Text calculations & Label Box
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 0.6
         thickness = 2
         label_size, _ = cv2.getTextSize(label, font, font_scale, thickness)
         text_w, text_h = label_size
 
-        # Safety Check: Text top boundary se bahar na jaye
         label_y1 = max(y1 - text_h - 10, 0)
         label_y2 = y1 if y1 - text_h - 10 >= 0 else y1 + text_h + 10
         text_y = y1 - 5 if y1 - text_h - 10 >= 0 else y1 + text_h + 5
 
-        # Solid background box behind text
         cv2.rectangle(img, (x1, label_y1), (x1 + text_w + 10, label_y2), color, -1)
 
-        # White Text render karna
         cv2.putText(
             img, label, (x1 + 5, text_y),
             font, font_scale, (255, 255, 255), thickness, cv2.LINE_AA
         )
 
-    # OpenCV BGR se PIL RGB conversion Streamlit display ke liye
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return Image.fromarray(img_rgb)
 
@@ -73,9 +61,8 @@ def draw_results_on_image(image_bytes, matches):
 st.title(" ArcFace AI Face Recognition System")
 st.caption("Powered by FastAPI, InsightFace, ChromaDB & Streamlit")
 
-# Sidebar for Server Status Check
 with st.sidebar:
-    st.header("⚙️ Server Status")
+    st.header(" Server Status")
     try:
         response = requests.get(f"{API_BASE_URL}/docs", timeout=2)
         if response.status_code == 200:
@@ -85,13 +72,8 @@ with st.sidebar:
     except Exception:
         st.error("FastAPI Backend: OFFLINE 🔴\n(Start main.py first)")
 
-# Main Navigation Tabs
 tab_search, tab_enroll = st.tabs(["🔍 Face Search & Recognition", "👤 Enroll New Person"])
-
-
-# ---------------------------------------------------------
-# TAB 1: FACE SEARCH & RECOGNITION
-# ---------------------------------------------------------
+# tab 1
 with tab_search:
     st.subheader("Upload Image(s) to Recognize Faces")
 
@@ -162,9 +144,7 @@ with tab_search:
                 except Exception as e:
                     st.error(f"Failed to connect to backend API: {e}")
 
-# ---------------------------------------------------------
 # TAB 2: ENROLL NEW PERSON
-# ---------------------------------------------------------
 with tab_enroll:
     st.subheader("Add a New Face to Database")
 
