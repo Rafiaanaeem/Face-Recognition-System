@@ -63,7 +63,6 @@ class FaceService:
                     cosine_dist = float("inf")
                     is_known = False
                     final_name = "Unknown"
-
                 face_matches.append({
                     "face_index": face["face_index"],
                     "bounding_box": face["bbox"],
