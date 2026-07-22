@@ -185,7 +185,6 @@ with tab_enroll:
             files_to_send = [
                 ("files", (f.name, f.getvalue(), f.type)) for f in enroll_files
             ]
-
             with st.spinner("Extracting embeddings & updating ChromaDB..."):
                 try:
                     res = requests.post(
