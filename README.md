@@ -1,130 +1,135 @@
-# Face Recognition System using ArcFace, FastAPI & ChromaDB
+# Face Recognition System using ArcFace, FastAPI, Multi-Agent Architecture & ChromaDB
 
 ## Overview
 
-This project is a production-oriented Face Recognition System built using **ArcFace**, **FastAPI**, and **ChromaDB**. The primary objective is to provide accurate face enrollment and identification while following modern software engineering and machine learning best practices.
+This project is a production-oriented Face Recognition System built using **ArcFace**, **FastAPI**, **ChromaDB**, **Streamlit**, and a **Multi-Agent Architecture**.
 
-Unlike projects that simply adopt a model based on research papers, this system follows a **data-driven engineering approach**. Multiple state-of-the-art face recognition models were benchmarked under identical experimental conditions, and the final model was selected based on experimental performance.
+Instead of selecting a face recognition model based solely on research papers, multiple state-of-the-art models were benchmarked under identical conditions. The final model was selected using a **data-driven engineering approach** based on experimental results.
 
+The system supports both **single-face** enrollment and **multiple-face** recognition and searching through a REST API and an interactive Streamlit interface.
+
+---
 
 # Project Objectives
 
-* Build a production-quality Face Recognition API.
-* Compare multiple state-of-the-art face recognition models.
-* Select the final model using benchmark results instead of assumptions.
-* Store facial embeddings inside a Vector Database.
-* Support both single-face and multiple-face enrollment.
-* Support both single-face and multiple-face recognition.
-* Build a modular and scalable FastAPI application.
+- Build a production-quality Face Recognition System.
+- Benchmark multiple face recognition models.
+- Select the best model using experimental results.
+- Store face embeddings in ChromaDB ( vector database)
+- Support single face enrollment (may modify it for the multi-face enrollment)
+- Support single and multiple face recognition.
+- Implement a modular Multi-Agent architecture.
 
+---
 
 # Model Benchmarking
 
-The following face recognition models were benchmarked using the same dataset and evaluation methodology.
-
-| Model   | Accuracy | F1 Score | Inference Time | Model Loading Time |
-| ------- | -------- | -------- | -------------- | ------------------ |
-| ArcFace | 100%     | 100%     | 1.14 sec       | 12.29 sec          |
-| MagFace | 100%     | 100%     | 1.77 sec       | 2.12 sec           |
-| AdaFace | 100%     | 100%     | 1.84 sec       | 27.49 sec          |
-| FaceNet | 78.57%   | 74.52%   | 0.15 sec       | 5.19 sec           |
+| Model | Accuracy | F1 Score | Inference Time | Model Loading Time |
+|--------|----------|----------|----------------|--------------------|
+| ArcFace | 100% | 100% | 1.14 sec | 12.29 sec |
+| MagFace | 100% | 100% | 1.77 sec | 2.12 sec |
+| AdaFace | 100% | 100% | 1.84 sec | 27.49 sec |
+| FaceNet | 78.57% | 74.52% | 0.15 sec | 5.19 sec |
 
 ### Final Selected Model
 
-**ArcFace** was selected as the production model because it achieved:
+**ArcFace** was selected because it achieved:
 
-* 100% Recognition Accuracy
-* 100% F1 Score
-* Stable inference performance
-* Moderate GPU memory usage
-* Excellent community support
-* Mature production ecosystem
-* Seamless integration through the official InsightFace implementation
-
-The selection was based on experimental benchmarking rather than research claims.
+- 100% Accuracy
+- 100% F1 Score
+- Fast inference
+- Low resource consumption
+- Mature ecosystem
+- Excellent community support
+- Easy production deployment
 
 ---
 
 # System Architecture
 
 ```text
-Client
-   │
-   ▼
-FastAPI
-   │
-   ▼
-POST /add
-POST /search
-   │
-   ▼
-ArcFace Pipeline
-   │
-   ├── Face Detection (SCRFD)
-   ├── Face Alignment
-   ├── Face Embedding Generation
-   └── L2 Normalization
-   │
-   ▼
-ChromaDB
-   │
-   ▼
-Cosine Similarity Search
-   │
-   ▼
-Recognition Results
+                    Streamlit Frontend
+                           │
+                           ▼
+                      FastAPI Router
+                           │
+                           ▼
+                   Supervisor Agent
+                           │
+                           ▼
+              Face Recognition Agent
+                    │             │
+                    ▼             ▼
+              Add Face Tool   Search Face Tool
+                    │             │
+                    └──────┬──────┘
+                           ▼
+                    ArcFace (InsightFace)
+                           │
+                           ▼
+                        ChromaDB
+                           │
+                           ▼
+                  Recognition Results
 ```
 
+---
 
 # Features
 
-* Face Detection using SCRFD
-* Face Alignment
-* ArcFace Embedding Generation
-* L2 Normalized Embeddings
-* ChromaDB Vector Database
-* Cosine Similarity Search
-* FastAPI REST API
-* Multiple-face Enrollment
-* Multiple-face Recognition
-* Benchmarking Framework
-* CSV Result Export
-* Modular Project Structure
+- Multi-Agent Architecture
+- Supervisor Agent
+- Face Recognition Agent
+- Add Face Tool
+- Search Face Tool
+- Face Detection (SCRFD)
+- Face Alignment
+- ArcFace Embedding Generation
+- L2 Normalization
+- ChromaDB Vector Database
+- Cosine Similarity Search
+- FastAPI REST API
+- Streamlit Frontend
+- Multiple-face Enrollment
+- Multiple-face Recognition
+- Benchmarking Framework
+- CSV Result Export
 
 ---
 
 # Technologies Used
 
-## Backend
+### Backend
 
-* FastAPI
-* Uvicorn
-* Pydantic
+- FastAPI
+- Uvicorn
+- Pydantic
 
-## Computer Vision
+### Computer Vision
 
-* InsightFace
-* ArcFace
-* Adaface
-* Magface
-* Facenet
-* SCRFD
-* OpenCV
+- InsightFace
+- ArcFace
+- SCRFD
+- OpenCV
 
-## Machine Learning
+### Machine Learning
 
-* NumPy
-* PyTorch
+- PyTorch
+- NumPy
 
-## Vector Database
+### Vector Database
 
-* ChromaDB
+- ChromaDB
 
-## Evaluation
+### Frontend
 
-* Scikit-learn
-* Pandas
-* tqdm
+- Streamlit
+
+### Evaluation
+
+- Pandas
+- Scikit-learn
+- tqdm
 
 ---
 
@@ -133,11 +138,13 @@ Recognition Results
 ```text
 face_recognition/
 
-│
 ├── app/
+│   ├── agents/
+│   │   ├── supervisor.py
+│   │   ├── agent.py
+│   │   └── tools.py
 │   ├── api/
 │   ├── config/
-│   ├── database/
 │   ├── models/
 │   ├── services/
 │   └── utils/
@@ -149,9 +156,8 @@ face_recognition/
 │   ├── enrollment/
 │   └── testing/
 │
+├── streamlit_app.py
 ├── main.py
-├── config.py
-├── stramlit_app.py
 ├── requirements.txt
 ├── README.md
 └── .gitignore
@@ -159,171 +165,171 @@ face_recognition/
 
 ---
 
-Streamlit Frontend
-
-The project includes a Streamlit-based user interface that communicates with the FastAPI backend.
-
-The frontend provides an easy way to interact with the Face Recognition API without using Swagger or Postman.
-
-Features
-Enroll new identities
-Upload one or multiple face images
-Search one or multiple face images
-Display recognition results
-Show similarity scores
-Display uploaded images
-User-friendly interface
----
-
 # API Endpoints
 
-## POST /add
+## POST `/add`
 
-Enroll one or more face images into the vector database.
+Enroll one person into the database.
 
-### Request
+**Input**
 
-* Person Name
-* One or more images
-```
+- Person Name
+- One or more face images of th same person
 
-### Response
+**Response**
 
-* Success Status
-* Total Faces Enrolled
-* Enrollment Details
+- Success Status
+- Enrollment Details
 
 ---
 
-## POST /search
+## POST `/search`
 
-Recognize one or more uploaded face images.
+Recognize one or more face images.
 
-```
+**Response**
 
-### Response
-
-* Person Name
-* Similarity Score
-* Bounding Box
-* Recognition Status
+- Person Name
+- Similarity Score
+- Bounding Box
+- Known / Unknown Status
 
 ---
 
 # Dataset
 
-The benchmark dataset contains approximately 15–20 images divided into two subsets.
+The benchmark dataset contains approximately **15–20 images** divided into:
 
-```
+```text
 dataset/
-
 ├── enrollment/
 └── testing/
 ```
 
 Testing images include:
 
-* Single-face images
-* Multiple-face images
-* Known identities
-* Unknown identities
-* Different poses
-* Different lighting conditions
+- Known people
+- Unknown people
+- Single-face images
+- Multiple-face images
+- Different lighting conditions
+- Different poses
 
-The same dataset was used for all benchmarked models to ensure a fair comparison.
+The same dataset was used for every benchmark to ensure a fair comparison.
 
 ---
 
 # Vector Database
 
-The system uses ChromaDB for storing face embeddings.
+The system uses **ChromaDB** to store normalized ArcFace embeddings.
 
 Each record contains:
 
-* Unique ID
-* Person Name
-* Face Embedding
-* Metadata
+- Unique ID
+- Person Name
+- Face Embedding
+- Metadata
 
-Cosine Similarity is used during retrieval.
+Recognition is performed using **Cosine Similarity Search**.
 
 ---
 
-# Evaluation Metrics
+# Streamlit Frontend
 
-The following metrics were measured during benchmarking:
+The project includes a Streamlit application that communicates with the FastAPI backend.
 
-* Accuracy
-* Precision
-* Recall
-* F1 Score
-* Embedding Dimension
-* Inference Time
-* Model Loading Time
-* CPU Usage
-* RAM Usage
-* GPU Utilization
-* GPU VRAM Usage
-* Model Size
-* Database Search Time
+Features:
+
+- Enroll new identities
+- Upload single or multiple images
+- Search faces
+- Display recognition results
+- Display similarity scores
+- Simple and user-friendly interface
 
 ---
 
 # Installation
 
-Clone the repository:
+Clone the repository
 
 ```bash
 git clone https://github.com/<your-username>/face-recognition-system.git
 ```
 
-Navigate into the project:
+Navigate to the project
 
 ```bash
 cd face-recognition-system
 ```
 
-Create a virtual environment:
+Create a virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate the virtual environment.
+Activate the virtual environment
 
-Windows:
+**Windows**
 
 ```bash
 venv\Scripts\activate
 ```
 
-Install dependencies:
+Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the FastAPI server:
+Run the FastAPI server
 
 ```bash
 uvicorn main:app --reload
+```
 
+Swagger UI
 
 ```
-Swagger Documentation:
-
 http://127.0.0.1:8000/docs
 ```
 
-Run the Streamlit Frontend
+Run Streamlit
 
-Open another terminal.
-Activate the virtual environment again.
-
-Run:
+```bash
 streamlit run streamlit_app.py
+```
 
-The Streamlit application will open automatically in your browser.
+Default URL
 
-Default URL:
+```
 http://localhost:8501
+```
+
+---
+
+# Evaluation Metrics
+
+The benchmark compared:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Embedding Dimension
+- Inference Time
+- Model Loading Time
+- CPU Usage
+- RAM Usage
+- GPU Utilization
+- GPU VRAM Usage
+- Model Size
+- Database Search Time
+
+---
+
+# License
+
+This project was developed for academic and educational purposes
+By Rafia Naeem 
