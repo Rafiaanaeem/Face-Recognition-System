@@ -1,38 +1,32 @@
+# main.py
 from fastapi import FastAPI
-from fastapi.openapi.utils import get_openapi
-from app.api.routes import router 
+from contextlib import asynccontextmanager
 
-app = FastAPI(title="Face Recognition API")
-app.openapi_version = "3.0.3"
+# 🟢 1. Import your existing modules precisely
+from app.api.routes import router as api_router
+from app.services.chroma_service import chroma_db  # Aapka original DB
+from app.models.model_loader import arcface       # Aapka InsightFace model
+from app.agents.supervisor import SupervisorAgent
 
-app.include_router(router)
-
-
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-
-    openapi_schema = get_openapi(
-        title=app.title,
-        version=app.version,
-        openapi_version="3.0.3",
-        routes=app.routes,
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("🚀 Starting FastAPI Server...")
+    
+    # 🟢 2. Pass the exact collection from chroma_service to your Supervisor
+    # Yeh ensure karega ke Agent wahi DB parhay jahan aapka purana dataset para hai!
+    app.state.supervisor = SupervisorAgent(
+        face_app=arcface.app,              # Access the raw FaceAnalysis app
+        collection=chroma_db.collection    # Access the exact Chroma collection
     )
+    
+    yield
+    print("🛑 Shutting down FastAPI Server...")
 
-    def fix_file_schemas(schema_dict):
-        if isinstance(schema_dict, dict):
-            if schema_dict.get("contentMediaType") == "application/octet-stream":
-                schema_dict.pop("contentMediaType", None)
-                schema_dict["format"] = "binary"
-            for value in schema_dict.values():
-                fix_file_schemas(value)
-        elif isinstance(schema_dict, list):
-            for item in schema_dict:
-                fix_file_schemas(item)
+app = FastAPI(title="ArcFace AI System", lifespan=lifespan)
 
-    fix_file_schemas(openapi_schema)
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
+# Register routes
+app.include_router(api_router)
 
-
-app.openapi = custom_openapi
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

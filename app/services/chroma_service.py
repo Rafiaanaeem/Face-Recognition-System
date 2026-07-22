@@ -2,6 +2,7 @@ import chromadb
 from typing import List, Dict, Any
 from app.config import settings
 from fastapi import HTTPException, status
+print(">>>>>>>> USING CHROMA_SERVICE.PY <<<<<<<<")
 
 class ChromaService:
     def __init__(self):
@@ -10,7 +11,9 @@ class ChromaService:
             name=settings.COLLECTION_NAME,
             metadata={"hnsw:space": "cosine"}
         )
-        
+        if self.collection.count() > 0:
+                    print(self.collection.peek())
+
         print("Database Path:", settings.CHROMA_PERSIST_DIR)
         print("Collection Name:", settings.COLLECTION_NAME)
         print("Total Embeddings:", self.collection.count())
