@@ -1,4 +1,4 @@
-Image_Name,Ground_Truth,Prediction,Status,Cosine_Distance,Correct/Incorrect,Feature_Extraction_Time,Search_Time,Inference_Time
+Image_Name,Ground_truth,Prediction,Status,Cosine_Distance,Correct/Incorrect,Feature_Extraction_Time,Search_Time,Inference_Time
 dr_strange1.png,dr_strange,dr_strange,Known,0.1949,Correct,2.3555102950003857,0.004439877999629971,2.3599501730000156
 dr_strange_loki.png,dr_strange,dr_strange,Known,0.3412,Correct,2.622434090000297,0.004250421000051574,2.629942958000356
 dr_strange_loki.png,loki,loki,Known,0.3999,Correct,2.622434090000297,0.003258447000007436,2.629942958000356
